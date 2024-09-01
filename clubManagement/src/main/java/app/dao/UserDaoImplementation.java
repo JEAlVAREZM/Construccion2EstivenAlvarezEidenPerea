@@ -12,24 +12,30 @@ public class UserDaoImplementation implements UserDao {
     private Connection connection = MysqlConnection.getConnection();
 
 
-    public UserDaoImplementation() {
+    public UserDaoImplementation(Connection connection) {
 
     }
 
     @Override
     public void createUser(UserDto userDto) throws SQLException {
-        String sql = "INSERT INTO user (ID, PERSONID, username, password) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO user (personnid, username, password, role) VALUES (?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setLong(1, userDto.getId());
-            statement.setString(2, userDto.getUserName());
-            statement.setString(3, userDto.getPassword());
+            // Establecemos los valores correctos en los parámetros
+            statement.setLong(1, userDto.getPersonId()); // Aquí debe ser un long, no un objeto PersonDto
+            statement.setString(2, userDto.getUserName()); // username
+            statement.setString(3, userDto.getPassword()); // password
+            statement.setString(4, userDto.getRole()); // role
+
             statement.executeUpdate();
+
+            // Obtener el ID generado automáticamente
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                userDto.setId(generatedKeys.getLong(1));
+                userDto.setId(generatedKeys.getLong(1)); // Asignar el ID generado al objeto UserDto
             }
         }
     }
+
 
     @Override
     public UserDto findById(long id) throws SQLException {

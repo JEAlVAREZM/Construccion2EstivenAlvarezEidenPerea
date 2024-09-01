@@ -1,6 +1,7 @@
 package app.dao;
 
 import app.dao.interfaces.PersonDao;
+import app.dto.PersonDto;
 import app.model.Person;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,5 +51,22 @@ public class PersonDaoImplementation implements PersonDao {
         person.setDocument(Long.parseLong(resultSet.getString("DOCUMENT")));
         person.setPhone(Long.parseLong(resultSet.getString("PHONE")));
         return person;
+    }
+
+    @Override
+    public void createPerson(PersonDto personDto) throws SQLException {
+        String sql = "INSERT INTO person (document, name, cellphone) VALUES (?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setLong(1, personDto.getDocument());
+            statement.setString(2, personDto.getName());
+            statement.setLong(3, personDto.getPhone());
+            statement.executeUpdate();
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    personDto.setId(generatedKeys.getLong(1));
+                }
+            }
+        }
     }
 }

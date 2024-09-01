@@ -1,12 +1,26 @@
 package app.controller;
 
+import app.config.MysqlConnection;
+import app.dao.AdminDaoImplementation;
+import app.dao.PersonDaoImplementation;
+import app.dao.UserDaoImplementation;
+import app.dao.interfaces.UserDao;
+import app.dto.PartnerDto;
+import app.dto.PersonDto;
 import app.dto.UserDto;
 import app.model.Invoice;
 import app.service.Service;
 import app.service.interfaces.AdminService;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import app.dao.interfaces.PersonDao;
+import java.util.Calendar;
+
+
+
+
 
 public class AdminController implements ControllerInterface {
 	private Scanner scanner;
@@ -57,27 +71,76 @@ public class AdminController implements ControllerInterface {
 	}
 
 	private void registerMember() throws Exception {
+		// Solicitar los datos de la persona
+		System.out.println("Ingrese el nombre:");
+		String nombre = scanner.nextLine();
+
 		System.out.println("Ingrese el número de documento:");
-		String document = scanner.nextLine();
-		System.out.println("Ingrese la contraseña:");
+		long document = scanner.nextLong();
+		scanner.nextLine();  // Consumir la línea pendiente
+
+		System.out.println("Ingrese el celular:");
+		long cellphone = scanner.nextLong();
+		scanner.nextLine();  // Consumir la línea pendiente
+
+		// Solicitar los datos del usuario
+		System.out.println("Ingrese el usuario:");
+		String user = scanner.nextLine();
+
+		System.out.println("Ingrese el password:");
 		String password = scanner.nextLine();
 
-		if (document.isEmpty() || password.isEmpty()) {
-			System.out.println("El nombre de usuario y la contraseña no pueden estar vacíos.");
-			return;
-		}
-
-		UserDto userDto = new UserDto();
-		userDto.setUserName(document);
-		userDto.setPassword(password);
+		// Crear un objeto PersonDto con los datos ingresados
+		PersonDto personDto = new PersonDto();
+		personDto.setName(nombre);
+		personDto.setDocument(document);
+		personDto.setPhone(cellphone);
 
 		try {
-			adminService.createUser(userDto);
-			System.out.println("Socio registrado exitosamente.");
+			// Crear una instancia de PersonDaoImplementation con una conexión a la base de datos
+			PersonDao personDao = new PersonDaoImplementation(MysqlConnection.getConnection());
+
+			// Llamar al método createPerson para insertar los datos en la base de datos
+			personDao.createPerson(personDto);
+			System.out.println("Persona registrada exitosamente con ID: " + personDto.getId());
+
+			// Crear un objeto UserDto con los datos ingresados y asignar el ID de la persona recién creada
+			UserDto userDto = new UserDto();
+			userDto.setUserName(user);
+			userDto.setPassword(password);
+			userDto.setRole("partner");
+			userDto.setPersonId(personDto.getId());  // Relacionar usuario con la persona creada
+
+			//Crear un objeto PartnerDto
+			// Obtener la fecha actual
+			Calendar calendar = Calendar.getInstance();
+			java.util.Date today = calendar.getTime(); // Fecha actual en java.util.Date
+
+			// Convertir java.util.Date a java.sql.Date
+			Date sqlDate = new Date(today.getTime());
+
+
+			/*PartnerDto partnerDto = new PartnerDto();
+			partnerDto.setAvailableMoney(50000);
+			partnerDto.setSubscriptionType("standard");
+			partnerDto.setAffiliationDate(sqlDate);*/
+
+
+
+			// Crear la instancia de UserDaoImplementation para insertar el usuario
+			UserDao userDao = new UserDaoImplementation(MysqlConnection.getConnection());
+			userDao.createUser(userDto);
+			System.out.println("Usuario registrado exitosamente con ID: " + userDto.getId());
+
+		} catch (SQLException e) {
+			System.err.println("Error al guardar en la base de datos: " + e.getMessage());
+			e.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("Error al registrar el socio: " + e.getMessage());
+			System.err.println("Error inesperado: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
+
 
 	private void viewInvoiceHistory() throws Exception {
 		boolean viewingInvoice = true;

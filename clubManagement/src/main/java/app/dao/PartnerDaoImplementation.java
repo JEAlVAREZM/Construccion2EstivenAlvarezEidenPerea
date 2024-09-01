@@ -21,7 +21,7 @@ public class PartnerDaoImplementation implements PartnerDao {
 
     @Override
     public void createPartner(Partner partner) throws Exception {
-        String sql = "INSERT INTO partner (USERID, AMOUNT, TYPE, CREATIONDATE) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO partner (userid, amount, type, creationdate) VALUES (?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, partner.getUserId().getId()); // Usamos el ID del User
             statement.setDouble(2, partner.getAvailableMoney());

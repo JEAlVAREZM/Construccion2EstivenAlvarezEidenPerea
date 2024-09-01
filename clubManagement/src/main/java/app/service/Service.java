@@ -1,20 +1,17 @@
 package app.service;
 
-import app.dao.GuestDaoImplementation;
-import app.dao.interfaces.GuestDao;
+import app.config.MysqlConnection;
 import app.dao.interfaces.InvoiceDao;
 import app.dao.interfaces.PartnerDao;
 import app.dao.interfaces.UserDao;
 import app.dao.InvoiceDaoImplementation;
 import app.dao.PartnerDaoImplementation;
 import app.dao.UserDaoImplementation;
-import app.dto.GuestDto;
 import app.dto.InvoiceDto;
 import app.dto.PartnerDto;
 import app.dto.UserDto;
 import app.model.Invoice;
 import app.service.interfaces.AdminService;
-import app.service.interfaces.GuestService;
 import app.service.interfaces.LoginService;
 
 import java.sql.SQLException;
@@ -28,7 +25,7 @@ public class Service implements AdminService, LoginService {
     public static UserDto user;
 
     public Service() {
-        this.userDao = new UserDaoImplementation();
+        this.userDao = new UserDaoImplementation(MysqlConnection.getConnection());
         this.partnerDao = new PartnerDaoImplementation();
         this.invoiceDao = new InvoiceDaoImplementation();
     }
@@ -73,7 +70,7 @@ public class Service implements AdminService, LoginService {
         }
 
         if (userDto.getRole() == null || userDto.getRole().isEmpty()) {
-            userDto.setRole("Regular");
+            userDto.setRole("partner");
         }
 
         if (userDto.getPersonId() == null) {

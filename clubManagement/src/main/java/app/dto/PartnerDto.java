@@ -44,13 +44,9 @@ public class PartnerDto {
             this.subscriptionType = subscriptionType;
         }
 
-        public Date getAffiliationDate() {
-            return affiliationDate;
-        }
+        public java.sql.Date getAffiliationDate() {return affiliationDate;}
 
-        public void setAffiliationDate(Date affiliationDate) {
-            this.affiliationDate = affiliationDate;
-        }
+        public void setAffiliationDate(java.sql.Date affiliationDate) {this.affiliationDate = affiliationDate;}
         
 
 }

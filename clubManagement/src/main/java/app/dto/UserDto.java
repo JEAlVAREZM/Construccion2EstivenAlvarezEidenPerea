@@ -2,7 +2,7 @@ package app.dto;
 
 public class UserDto {
     	private long id;
-        private PersonDto personId;
+        private Long personId;
         private String password;
         private String userName;
         private String role;
@@ -14,15 +14,15 @@ public class UserDto {
             return id;
         }
 
-        public void setId(long id) {
+        public void setId(Long id) {
             this.id = id;
         }
 
-        public PersonDto getPersonId() {
+        public Long getPersonId() {
             return personId;
         }
 
-        public void setPersonId(PersonDto personId) {
+        public void setPersonId(long personId) {
             this.personId = personId;
         }
 
@@ -50,6 +50,4 @@ public class UserDto {
             this.role = role;
         }
 
-        public void setPersonId(long personId) {
-        }
 }

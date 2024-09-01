@@ -14,10 +14,10 @@ public class AdminDaoImplementation implements AdminDao {
     }
 
     public void createUser(UserDto userDto) throws Exception {
-        String sql = "INSERT INTO user (PERSONNID, USERNAME, PASSWORD, ROLE) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO user (personnid, username, password, role) VALUES (?, ?, ?, ?)";
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setLong(1, userDto.getId());
+            preparedStatement.setLong(1, userDto.getPersonId());
             preparedStatement.setString(2, userDto.getUserName());
             preparedStatement.setString(3, userDto.getPassword());
             preparedStatement.setString(4, userDto.getRole());
@@ -25,7 +25,7 @@ public class AdminDaoImplementation implements AdminDao {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new Exception("Error al crear el usuario JIJI", e);
+            throw new Exception("Error al crear el usuario", e);
         }
     }
 
