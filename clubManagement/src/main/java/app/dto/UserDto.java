@@ -1,7 +1,7 @@
 package app.dto;
 
 public class UserDto {
-    	private long id;
+    	private Long id;
         private Long personId;
         private String password;
         private String userName;
@@ -10,7 +10,7 @@ public class UserDto {
         public UserDto() {
         }
         
-        public long getId() {
+        public Long getId() {
             return id;
         }
 

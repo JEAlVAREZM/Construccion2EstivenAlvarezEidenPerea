@@ -2,8 +2,10 @@ package app.controller;
 
 import app.config.MysqlConnection;
 import app.dao.AdminDaoImplementation;
+import app.dao.PartnerDaoImplementation;
 import app.dao.PersonDaoImplementation;
 import app.dao.UserDaoImplementation;
+import app.dao.interfaces.PartnerDao;
 import app.dao.interfaces.UserDao;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
@@ -17,8 +19,6 @@ import java.util.List;
 import java.util.Scanner;
 import app.dao.interfaces.PersonDao;
 import java.util.Calendar;
-
-
 
 
 
@@ -111,26 +111,31 @@ public class AdminController implements ControllerInterface {
 			userDto.setRole("partner");
 			userDto.setPersonId(personDto.getId());  // Relacionar usuario con la persona creada
 
-			//Crear un objeto PartnerDto
-			// Obtener la fecha actual
-			Calendar calendar = Calendar.getInstance();
-			java.util.Date today = calendar.getTime(); // Fecha actual en java.util.Date
-
-			// Convertir java.util.Date a java.sql.Date
-			Date sqlDate = new Date(today.getTime());
-
-
-			/*PartnerDto partnerDto = new PartnerDto();
-			partnerDto.setAvailableMoney(50000);
-			partnerDto.setSubscriptionType("standard");
-			partnerDto.setAffiliationDate(sqlDate);*/
-
-
-
 			// Crear la instancia de UserDaoImplementation para insertar el usuario
 			UserDao userDao = new UserDaoImplementation(MysqlConnection.getConnection());
 			userDao.createUser(userDto);
 			System.out.println("Usuario registrado exitosamente con ID: " + userDto.getId());
+
+			// Asegurarse de que el ID del usuario se haya generado y asignado correctamente
+			if (userDto.getId() == null) {
+				throw new Exception("Error: No se pudo obtener el ID del usuario después de la inserción.");
+			}
+
+			// Crear un objeto PartnerDto con los datos ingresados
+			Calendar calendar = Calendar.getInstance();
+			java.util.Date today = calendar.getTime(); // Fecha actual en java.util.Date
+			java.sql.Timestamp timestamp = new java.sql.Timestamp(today.getTime());
+
+			PartnerDto partnerDto = new PartnerDto();
+			partnerDto.setAvailableMoney(50000);
+			partnerDto.setSubscriptionType("standard");
+			partnerDto.setAffiliationDate(timestamp);
+			partnerDto.setUserId(userDto.getId()); // Relacionar partner con el usuario recién creado
+
+			// Crear la instancia de PartnerDaoImplementation para insertar el partner
+			PartnerDao partnerDao = new PartnerDaoImplementation(MysqlConnection.getConnection());
+			partnerDao.createPartner(partnerDto);
+			System.out.println("Partner registrado exitosamente con ID: " + partnerDto.getId());
 
 		} catch (SQLException e) {
 			System.err.println("Error al guardar en la base de datos: " + e.getMessage());
@@ -140,6 +145,8 @@ public class AdminController implements ControllerInterface {
 			e.printStackTrace();
 		}
 	}
+
+
 
 
 	private void viewInvoiceHistory() throws Exception {

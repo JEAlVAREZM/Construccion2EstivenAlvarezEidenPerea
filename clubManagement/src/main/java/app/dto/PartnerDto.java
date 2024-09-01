@@ -4,10 +4,10 @@ import java.sql.Date;
     
 public class PartnerDto {
         private long id;
-        private UserDto userId;
+        private Long userId;
         private double availableMoney;
         private String subscriptionType;
-        private Date affiliationDate;
+        private java.sql.Timestamp affiliationDate;
 
         public PartnerDto() {
         }
@@ -20,11 +20,11 @@ public class PartnerDto {
             this.id = id;
         }
 
-        public UserDto getUserId() {
+        public Long getUserId() {
             return userId;
         }
 
-        public void setUserId(UserDto userId) {
+        public void setUserId(Long userId) {
             this.userId = userId;
         }
 
@@ -44,9 +44,9 @@ public class PartnerDto {
             this.subscriptionType = subscriptionType;
         }
 
-        public java.sql.Date getAffiliationDate() {return affiliationDate;}
+        public java.sql.Timestamp getAffiliationDate() {return affiliationDate;}
 
-        public void setAffiliationDate(java.sql.Date affiliationDate) {this.affiliationDate = affiliationDate;}
+        public void setAffiliationDate(java.sql.Timestamp affiliationDate) {this.affiliationDate = affiliationDate;}
         
 
 }
