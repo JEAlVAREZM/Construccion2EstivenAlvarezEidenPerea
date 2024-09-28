@@ -1,45 +1,54 @@
-
 package app.dto;
 
 public class PersonDto {
-    	private long id;
-        private String name;
-        private long document;
-        private long phone;
-        
-        public PersonDto() {
-        }
 
-        public long getId() {
-            return id;
-        }
+    private int guestCount;
+    private long id;
+    private long document;
+    private String name;
+    private long celPhone;
 
-        public void setId(long id) {
-            this.id = id;
-        }
+    public PersonDto() {
+    }
 
-        public String getName() {
-            return name;
-        }
+    public int getGuestCount() {
+        return guestCount;
+    }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+    public void setGuestCount(int guestCount) {
+        this.guestCount = guestCount;
+    }
 
-        public long getDocument() {
-            return document;
-        }
+    public long getId() {
+        return id;
+    }
 
-        public void setDocument(long document) {
-            this.document = document;
-        }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-        public long getPhone() {
-            return phone;
-        }
+    public long getDocument() {
+        return document;
+    }
 
-        public void setPhone(long phone) {
-            this.phone = phone;
-        }
+    public void setDocument(long document) {
+        this.document = document;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getCelPhone() {
+        return celPhone;
+    }
+
+    public void setCelPhone(long celPhone) {
+        this.celPhone = celPhone;
+    }
 
 }

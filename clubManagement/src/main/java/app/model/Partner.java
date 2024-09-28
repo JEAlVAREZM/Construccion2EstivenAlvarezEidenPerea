@@ -1,68 +1,56 @@
 package app.model;
-import java.sql.Date;
-    
+
+import java.sql.Timestamp;
+
 public class Partner {
-        private long id;
-        private User userId;
-        private double availableMoney;
-        private String subscriptionType;
-        private Date affiliationDate;
 
-        public Partner(long id, User userId, double availableMoney, String subscriptionType, Date affiliationDate) {
-            this.id = id;
-            this.userId = userId;
-            this.availableMoney = availableMoney;
-            this.subscriptionType = subscriptionType;
-            this.affiliationDate = affiliationDate;
-        }
-
-    public Partner(long partnerid) {
-    }
+    private long id;
+    private User userId;
+    private double money;
+    private String Type;
+    private Timestamp dateCreated;
 
     public Partner() {
-
     }
 
     public long getId() {
-            return id;
-        }
+        return id;
+    }
 
-        public void setId(long id) {
-            this.id = id;
-        }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-        public User getUserId() {
-            return userId;
-        }
+    public User getUserId() {
+        return userId;
+    }
 
-        public void setUserId(User userId) {
-            this.userId = userId;
-        }
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
 
-        public double getAvailableMoney() {
-            return availableMoney;
-        }
+    public double getMoney() {
+        return money;
+    }
 
-        public void setAvailableMoney(double availableMoney) {
-            this.availableMoney = availableMoney;
-        }
+    public void setMoney(double money) {
+        this.money = money;
+    }
 
-        public String getSubscriptionType() {
-            return subscriptionType;
-        }
+    public String getType() {
+        return Type;
+    }
 
-        public void setSubscriptionType(String subscriptionType) {
-            this.subscriptionType = subscriptionType;
-        }
+    public void setType(String Type) {
+        this.Type = Type;
+    }
 
-        public Date getAfiliationDate() {
-            return affiliationDate;
-        }
+    public Timestamp getDateCreated() {
+        return dateCreated;
+    }
 
-        public void setAffiliationDate(Date afiliationDate) {
-            this.affiliationDate = afiliationDate;
-        }
+    public void setDateCreated(Timestamp dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
-        public void setActive(boolean b) {
-        }
 }

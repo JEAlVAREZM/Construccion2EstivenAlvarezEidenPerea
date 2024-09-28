@@ -3,86 +3,83 @@ package app.dao;
 import app.config.MysqlConnection;
 import app.dao.interfaces.UserDao;
 import app.dto.UserDto;
-import java.sql.Connection;
+import app.helper.Helper;
+import app.model.Person;
+import app.model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+
 
 public class UserDaoImplementation implements UserDao {
-    private Connection connection = MysqlConnection.getConnection();
-
-
-    public UserDaoImplementation(Connection connection) {
-
-    }
 
     @Override
-    public void createUser(UserDto userDto) throws SQLException {
-        String sql = "INSERT INTO user (personnid, username, password, role) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            // Establecemos los valores correctos en los parámetros
-            statement.setLong(1, userDto.getPersonId()); // Aquí debe ser un long, no un objeto PersonDto
-            statement.setString(2, userDto.getUserName()); // username
-            statement.setString(3, userDto.getPassword()); // password
-            statement.setString(4, userDto.getRole()); // role
 
-            statement.executeUpdate();
-
-            // Obtener el ID generado automáticamente
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                userDto.setId(generatedKeys.getLong(1)); // Asignar el ID generado al objeto UserDto
-            }
+    public UserDto findByUserName(UserDto userDto) throws Exception {
+        String query = "SELECT ID,USERNAME,PASSWORD,ROLE ,PERSONNID FROM USER WHERE USERNAME = ?";
+        PreparedStatement preparedStatement = MysqlConnection.getConnection().prepareStatement(query);
+        preparedStatement.setString(1, userDto.getUserName());
+        ResultSet resulSet = preparedStatement.executeQuery();
+        if (resulSet.next()) {
+            User user = new User();
+            user.setId(resulSet.getLong("ID"));
+            user.setUserName(resulSet.getString("USERNAME"));
+            user.setPassword(resulSet.getString("PASSWORD"));
+            user.setRole(resulSet.getString("ROLE"));
+            Person person = new Person();
+            person.setId(resulSet.getLong("PERSONNID"));
+            user.setPersonId(person);
+            resulSet.close();
+            preparedStatement.close();
+            return Helper.parse(user);
         }
-    }
-
-
-    @Override
-    public UserDto findById(long id) throws SQLException {
-        String sql = "SELECT * FROM user WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return mapResultSetToUserDto(resultSet);
-            }
-        }
+        resulSet.close();
+        preparedStatement.close();
         return null;
     }
 
     @Override
-    public UserDto findByUserName(String username) throws SQLException {
-        String sql = "SELECT * FROM user WHERE username = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, username);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return mapResultSetToUserDto(resultSet);
-            }
-        }
-        return null;
+    public boolean existsByUserName(UserDto userDto) throws Exception {
+        String query = "SELECT 1 FROM USER WHERE USERNAME = ?";
+        PreparedStatement preparedStatement = MysqlConnection.getConnection().prepareStatement(query);
+        preparedStatement.setString(1, userDto.getUserName());
+        ResultSet resulSet = preparedStatement.executeQuery();
+        boolean exists = resulSet.next();
+        resulSet.close();
+        preparedStatement.close();
+        return exists;
     }
 
     @Override
-    public boolean existsByUserName(String username) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM user WHERE username = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, username);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt(1) > 0;
-            }
-        }
-        return false;
+    public void createUser(UserDto userDto) throws Exception {
+        User user = Helper.parse(userDto);
+        String query = "INSERT INTO USER(PERSONNID,USERNAME,PASSWORD,ROLE) VALUES (?,?,?,?) ";
+        PreparedStatement preparedStatement = MysqlConnection.getConnection().prepareStatement(query);
+        preparedStatement.setLong(1, user.getPersonId().getId());
+        preparedStatement.setString(2, user.getUserName());
+        preparedStatement.setString(3, user.getPassword());
+        preparedStatement.setString(4, user.getRole());
+        preparedStatement.execute();
+        preparedStatement.close();
     }
 
-    private UserDto mapResultSetToUserDto(ResultSet resultSet) throws SQLException {
-        UserDto userDto = new UserDto();
-        userDto.setId(resultSet.getLong("ID"));
-        userDto.setPersonId(resultSet.getLong("PERSONNID"));
-        userDto.setUserName(resultSet.getString("USERNAME"));
-        userDto.setPassword(resultSet.getString("PASSWORD"));
-        userDto.setRole(resultSet.getString("ROLE"));
-        return userDto;
+    @Override
+    public void deleteUser(UserDto userDto) throws Exception {
+        User user = Helper.parse(userDto);
+        String query = "DELETE FROM USER WHERE PERSONNID = ?";
+        PreparedStatement preparedStatement = MysqlConnection.getConnection().prepareStatement(query);
+        preparedStatement.setLong(1, user.getPersonId().getId());
+        preparedStatement.execute();
+        preparedStatement.close();
+
+    }
+
+    @Override
+    public void updateUserRole(UserDto userDto) throws Exception {
+        String query = "UPDATE USER SET ROLE = ? WHERE USERNAME = ?";
+
+        PreparedStatement preparedStatement = MysqlConnection.getConnection().prepareStatement(query);
+        preparedStatement.setString(1, userDto.getRole());
+        preparedStatement.setString(2, userDto.getUserName());
+        preparedStatement.executeUpdate();
     }
 }

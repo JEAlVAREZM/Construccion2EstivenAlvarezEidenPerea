@@ -1,29 +1,31 @@
+
 package app.controller;
 
 import app.controller.validator.UserValidator;
-import app.dto.PersonDto;
 import app.dto.UserDto;
-import app.service.Service;
 import app.service.interfaces.LoginService;
+import app.service.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginController implements ControllerInterface{
+
+public class LoginController implements ControllerInterface {
+
     private UserValidator userValidator;
     private LoginService service;
-    private static final String MENU = "Ingrese la opción que desea: \n 1. Para iniciar sesión. \n 2. Para detener la ejecución.";
-    private Map<String, ControllerInterface> roles;
+    private static final String MENU = "ingrese la opcion que desea: \n 1. para iniciar sesion. \n 2. para detener la ejecucion.";
+    private Map<String, ControllerInterface> role;
 
     public LoginController() {
         this.userValidator = new UserValidator();
-        this.service = new Service();
+        this.service = (LoginService) new Service();
         ControllerInterface adminController = new AdminController();
-        ControllerInterface guestController = new GuestController();
         ControllerInterface partnerController = new PartnerController();
-        this.roles = new HashMap<>();
-        roles.put("admin", adminController);
-        roles.put("partner", partnerController);
-        roles.put("guest", guestController);
+        ControllerInterface guestController = new GuestController();
+        this.role = new HashMap<String, ControllerInterface>();
+        role.put("admin", adminController);
+        role.put("partner", partnerController);
+        role.put("guest", guestController);
     }
 
     @Override
@@ -32,6 +34,7 @@ public class LoginController implements ControllerInterface{
         while (session) {
             session = menu();
         }
+
     }
 
     private boolean menu() {
@@ -52,53 +55,32 @@ public class LoginController implements ControllerInterface{
                 return true;
             }
             case "2": {
-                System.out.println("Se detiene el programa.");
+                System.out.println("se detiene el programa");;
                 return false;
             }
             default: {
-                System.out.println("Ingrese una opción válida.");
+                System.out.println("ingrese una opcion valida");
                 return true;
             }
         }
     }
 
     private void login() throws Exception {
-        System.out.println("Ingrese el usuario:");
+        System.out.println("ingrese el usuario");
         String userName = Utils.getReader().nextLine();
         userValidator.validUserName(userName);
-        System.out.println("Ingrese la contraseña:");
+        System.out.println("ingrese la contraseña");
         String password = Utils.getReader().nextLine();
         userValidator.validPassword(password);
         UserDto userDto = new UserDto();
         userDto.setPassword(password);
         userDto.setUserName(userName);
         this.service.login(userDto);
-        if (roles.get(userDto.getRole()) == null) {
-            throw new Exception("Rol inválido.");
+        if (role.get(userDto.getRole()) == null) {
+            throw new Exception("Rol invalido");
         }
-        roles.get(userDto.getRole()).session();
+        role.get(userDto.getRole()).session();
 
     }
 
-    private void createUser() throws Exception {
-        System.out.println("Ingrese el id:");
-    }
-
-    private void createAdminIfNotExists() {
-        try {
-            UserDto admin = new UserDto();
-            admin.setUserName("admin");
-            admin.setPassword("123456");
-            admin.setRole("admin");
-
-            if (!service.isUserPresent("admin")) {
-                service.createUser(admin);
-                System.out.println("Usuario Admin creado exitosamente.");
-            } else {
-                System.out.println("El usuario Admin ya existe.");
-            }
-        } catch (Exception e) {
-            System.out.println("Error al crear el usuario Admin: " + e.getMessage());
-        }
-    }
 }

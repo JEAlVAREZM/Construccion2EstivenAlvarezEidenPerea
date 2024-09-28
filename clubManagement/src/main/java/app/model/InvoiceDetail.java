@@ -1,21 +1,14 @@
 package app.model;
 
 public class InvoiceDetail {
+
     private long id;
-    private Invoice invoice; //
-    private int itemNumber;
-    private String concept;
-    private double itemValue;
+    private Invoice invoiceId;
+    private int item;
+    private String description;
+    private double amount;
 
     public InvoiceDetail() {
-    }
-
-    public InvoiceDetail(long id, Invoice invoice, int itemNumber, String concept, double itemValue) {
-        this.id = id;
-        this.invoice = invoice;
-        this.itemNumber = itemNumber;
-        this.concept = concept;
-        this.itemValue = itemValue;
     }
 
     public long getId() {
@@ -26,35 +19,35 @@ public class InvoiceDetail {
         this.id = id;
     }
 
-    public Invoice getInvoice() {
-        return invoice;
+    public Invoice getInvoiceId() {
+        return invoiceId;
     }
 
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
+    public void setInvoiceId(Invoice invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
-    public int getItemNumber() {
-        return itemNumber;
+    public int getItem() {
+        return item;
     }
 
-    public void setItemNumber(int itemNumber) {
-        this.itemNumber = itemNumber;
+    public void setItem(int item) {
+        this.item = item;
     }
 
-    public String getConcept() {
-        return concept;
+    public String getDescription() {
+        return description;
     }
 
-    public void setConcept(String concept) {
-        this.concept = concept;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public double getItemValue() {
-        return itemValue;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setItemValue(double itemValue) {
-        this.itemValue = itemValue;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 }

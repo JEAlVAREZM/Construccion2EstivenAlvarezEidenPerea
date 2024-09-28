@@ -1,14 +1,15 @@
 package app.dto;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class InvoiceDto {
+
     private long id;
     private PersonDto personId;
     private PartnerDto partnerId;
-    private Date date;
+    private Date creationDate;
     private double amount;
-    private boolean stateInvoice;
+    private boolean Status;
 
     public InvoiceDto() {
     }
@@ -37,12 +38,12 @@ public class InvoiceDto {
         this.partnerId = partnerId;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public double getAmount() {
@@ -53,12 +54,12 @@ public class InvoiceDto {
         this.amount = amount;
     }
 
-    public boolean getStateInvoice() {
-        return stateInvoice;
+    public boolean isStatus() {
+        return Status;
     }
 
-    public void setStateInvoice(boolean stateInvoice) {
-        this.stateInvoice = stateInvoice;
+    public void setStatus(boolean Status) {
+        this.Status = Status;
     }
 
 }

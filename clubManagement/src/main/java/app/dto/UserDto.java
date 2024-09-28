@@ -1,53 +1,55 @@
 package app.dto;
 
+
 public class UserDto {
-    	private Long id;
-        private Long personId;
-        private String password;
-        private String userName;
-        private String role;
 
-        public UserDto() {
-        }
-        
-        public Long getId() {
-            return id;
-        }
+    private long id;
+    private PersonDto personId;
+    private String userName;
+    private String password;
+    private String role;
 
-        public void setId(Long id) {
-            this.id = id;
-        }
+    public UserDto() {
+    }
 
-        public Long getPersonId() {
-            return personId;
-        }
+    public long getId() {
+        return id;
+    }
 
-        public void setPersonId(long personId) {
-            this.personId = personId;
-        }
+    public String getPassword() {
+        return password;
+    }
 
-        public String getPassword() {
-            return password;
-        }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-        public void setPassword(String password) {
-            this.password = password;
-        }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-        public String getUserName() {
-            return userName;
-        }
+    public PersonDto getPersonId() {
+        return personId;
+    }
 
-        public void setUserName(String userName) {
-            this.userName = userName;
-        }
+    public void setPersonId(PersonDto personId) {
+        this.personId = personId;
+    }
 
-        public String getRole() {
-            return role;
-        }
+    public String getUserName() {
+        return userName;
+    }
 
-        public void setRole(String role) {
-            this.role = role;
-        }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
 }

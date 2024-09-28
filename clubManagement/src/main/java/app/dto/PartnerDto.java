@@ -1,52 +1,56 @@
-
 package app.dto;
-import java.sql.Date;
-    
+
+import java.sql.Timestamp;
+
 public class PartnerDto {
-        private long id;
-        private Long userId;
-        private double availableMoney;
-        private String subscriptionType;
-        private java.sql.Timestamp affiliationDate;
 
-        public PartnerDto() {
-        }
+    private long id;
+    private UserDto userId;
+    private double money;
+    private String type;
+    private Timestamp dateCreated;
 
-        public long getId() {
-            return id;
-        }
+    public PartnerDto() {
+    }
 
-        public void setId(long id) {
-            this.id = id;
-        }
+    public long getId() {
+        return id;
+    }
 
-        public Long getUserId() {
-            return userId;
-        }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-        public void setUserId(Long userId) {
-            this.userId = userId;
-        }
+    public UserDto getUserId() {
+        return userId;
+    }
 
-        public double getAvailableMoney() {
-            return availableMoney;
-        }
+    public void setUserId(UserDto userId) {
+        this.userId = userId;
+    }
 
-        public void setAvailableMoney(double availableMoney) {
-            this.availableMoney = availableMoney;
-        }
+    public double getMoney() {
+        return money;
+    }
 
-        public String getSubscriptionType() {
-            return subscriptionType;
-        }
+    public void setMoney(double money) {
+        this.money = money;
+    }
 
-        public void setSubscriptionType(String subscriptionType) {
-            this.subscriptionType = subscriptionType;
-        }
+    public String getType() {
+        return type;
+    }
 
-        public java.sql.Timestamp getAffiliationDate() {return affiliationDate;}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-        public void setAffiliationDate(java.sql.Timestamp affiliationDate) {this.affiliationDate = affiliationDate;}
-        
+    public Timestamp getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Timestamp dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
 }

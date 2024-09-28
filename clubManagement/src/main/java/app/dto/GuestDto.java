@@ -1,45 +1,45 @@
 package app.dto;
 
-
-
 public class GuestDto {
-        private long id;
-        private UserDto userId;
-        private PartnerDto partnerId;
-        private boolean stateInvitation;
-        public GuestDto() {
-        }
 
-        public long getId() {
-            return id;
-        }
+    private long id;
+    private UserDto userId;
+    private PartnerDto partnerId;
+    private String status;
 
-        public void setId(long id) {
-            this.id = id;
-        }
+    public GuestDto() {
+    }
 
-        public UserDto getUserId() {
-            return userId;
-        }
+    public long getId() {
+        return id;
+    }
 
-        public void setUserId(UserDto userId) {
-            this.userId = userId;
-        }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-        public PartnerDto getPartnerId() {
-            return partnerId;
-        }
+    public UserDto getUserId() {
+        return userId;
+    }
 
-        public void setPartnerId(PartnerDto partnerId) {
-            this.partnerId = partnerId;
-        }
+    public void setUserId(UserDto userId) {
+        this.userId = userId;
+    }
 
-        public boolean isStateInvitation() {
-            return stateInvitation;
-        }
+    public PartnerDto getPartnerId() {
+        return partnerId;
+    }
 
-        public void setStateInvitation(boolean stateInvitation) {
-            this.stateInvitation = stateInvitation;
-        }
-	
+    public void setPartnerId(PartnerDto partnerId) {
+        this.partnerId = partnerId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

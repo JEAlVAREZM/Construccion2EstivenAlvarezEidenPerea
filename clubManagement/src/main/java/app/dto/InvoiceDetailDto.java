@@ -1,13 +1,12 @@
 package app.dto;
 
-import app.model.Invoice;
-
 public class InvoiceDetailDto {
+
     private long id;
-    private Invoice invoice; //
-    private int itemNumber;
-    private String concept;
-    private double itemValue;
+    private InvoiceDto invoice;
+    private int item;
+    private String description;
+    private double amount;
 
     public InvoiceDetailDto() {
     }
@@ -20,35 +19,36 @@ public class InvoiceDetailDto {
         this.id = id;
     }
 
-    public Invoice getInvoice() {
+    public InvoiceDto getInvoice() {
         return invoice;
     }
 
-    public void setInvoice(Invoice invoice) {
+    public void setInvoice(InvoiceDto invoice) {
         this.invoice = invoice;
     }
 
-    public int getItemNumber() {
-        return itemNumber;
+    public int getItem() {
+        return item;
     }
 
-    public void setItemNumber(int itemNumber) {
-        this.itemNumber = itemNumber;
+    public void setItem(int item) {
+        this.item = item;
     }
 
-    public String getConcept() {
-        return concept;
+    public String getDescription() {
+        return description;
     }
 
-    public void setConcept(String concept) {
-        this.concept = concept;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public double getItemValue() {
-        return itemValue;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setItemValue(double itemValue) {
-        this.itemValue = itemValue;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
+
 }

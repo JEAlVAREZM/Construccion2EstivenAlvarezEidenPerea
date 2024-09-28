@@ -1,72 +1,72 @@
 package app.dao;
 
+import app.config.MysqlConnection;
 import app.dao.interfaces.PersonDao;
 import app.dto.PersonDto;
+import app.helper.Helper;
 import app.model.Person;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+
 
 public class PersonDaoImplementation implements PersonDao {
-    private Connection connection;
 
-    public PersonDaoImplementation(Connection connection) {
-        this.connection = connection;
+    @Override
+    public boolean existByDocument(PersonDto personDto) throws Exception {
+        String query = "SELECT 1 FROM PERSON WHERE DOCUMENT = ?";
+        PreparedStatement preparedStatement = MysqlConnection.getConnection().prepareStatement(query);
+        preparedStatement.setLong(1, personDto.getDocument());
+        ResultSet resulSet = preparedStatement.executeQuery();
+        boolean exists = resulSet.next();
+        resulSet.close();
+        preparedStatement.close();
+        return exists;
     }
 
     @Override
-    public void insertPerson(Person person) throws SQLException {
-        String sql = "INSERT INTO person (name, document, phone) VALUES (?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, person.getName());
-            statement.setLong(2, person.getDocument());
-            statement.setLong(3, person.getPhone());
-            statement.executeUpdate();
+    public void createPerson(PersonDto personDto) throws Exception {
 
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                person.setId(generatedKeys.getLong(1));
-            }
-        }
+        Person person = Helper.parse(personDto);
+        String query = "INSERT INTO PERSON(NAME,DOCUMENT,CELLPHONE) VALUES (?,?,?) ";
+        PreparedStatement preparedStatement = MysqlConnection.getConnection().prepareStatement(query);
+        preparedStatement.setString(1, person.getName());
+        preparedStatement.setLong(2, person.getDocument());
+        preparedStatement.setLong(3, person.getCelPhone());
+        preparedStatement.execute();
+        preparedStatement.close();
     }
 
     @Override
-    public Person getPersonById(long personId) throws SQLException {
-        String sql = "SELECT * FROM person WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setLong(1, personId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return mapResultSetToPerson(resultSet);
-            }
-        }
-        return null;
-    }
-
-    private Person mapResultSetToPerson(ResultSet resultSet) throws SQLException {
-        Person person = new Person();
-        person.setId(resultSet.getLong("ID"));
-        person.setName(resultSet.getString("NAME"));
-        person.setDocument(Long.parseLong(resultSet.getString("DOCUMENT")));
-        person.setPhone(Long.parseLong(resultSet.getString("PHONE")));
-        return person;
+    public void deletePerson(PersonDto personDto) throws Exception {
+        Person person = Helper.parse(personDto);
+        String query = "DELETE FROM PERSON WHERE DOCUMENT = ?";
+        PreparedStatement preparedStatement = MysqlConnection.getConnection().prepareStatement(query);
+        preparedStatement.setLong(1, personDto.getDocument());
+        preparedStatement.execute();
+        preparedStatement.close();
     }
 
     @Override
-    public void createPerson(PersonDto personDto) throws SQLException {
-        String sql = "INSERT INTO person (document, name, cellphone) VALUES (?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setLong(1, personDto.getDocument());
-            statement.setString(2, personDto.getName());
-            statement.setLong(3, personDto.getPhone());
-            statement.executeUpdate();
+    public PersonDto findByDocument(PersonDto personDto) throws Exception {
 
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    personDto.setId(generatedKeys.getLong(1));
-                }
-            }
+        String query = "SELECT ID,DOCUMENT,NAME,CELLPHONE FROM PERSON WHERE DOCUMENT = ?";
+        PreparedStatement preparedStatement = MysqlConnection.getConnection().prepareStatement(query);
+        preparedStatement.setLong(1, personDto.getDocument());
+        ResultSet resulSet = preparedStatement.executeQuery();
+        if (resulSet.next()) {
+            Person person = new Person();
+            person.setId(resulSet.getLong("ID"));
+            person.setDocument(resulSet.getLong("DOCUMENT"));
+            person.setName(resulSet.getString("NAME"));
+            person.setCelPhone(resulSet.getLong("CELLPHONE"));
+            resulSet.close();
+            preparedStatement.close();
+            return Helper.parse(person);
+        } else {
+            resulSet.close();
+            preparedStatement.close();
+            return null;
         }
     }
+
 }

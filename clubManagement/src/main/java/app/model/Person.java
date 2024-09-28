@@ -1,57 +1,44 @@
-
 package app.model;
 
 public class Person {
-    	private long id;
-        private String name;
-        private long document;
-        private long phone;
-        
 
-        public Person(long id, String name, long document, long phone) {
-            this.id = id;
-            this.name = name;
-            this.document = document;
-            this.phone = phone;
-        }
-
-    public Person(long personid) {
-    }
+    private long id;
+    private long document;
+    private String name;
+    private long celPhone;
 
     public Person() {
-
     }
 
     public long getId() {
-            return id;
-        }
+        return id;
+    }
 
-        public void setId(long id) {
-            this.id = id;
-        }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-        public String getName() {
-            return name;
-        }
+    public long getDocument() {
+        return document;
+    }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+    public void setDocument(long document) {
+        this.document = document;
+    }
 
-        public long getDocument() {
-            return document;
-        }
+    public String getName() {
+        return name;
+    }
 
-        public void setDocument(long document) {
-            this.document = document;
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        public long getPhone() {
-            return phone;
-        }
+    public long getCelPhone() {
+        return celPhone;
+    }
 
-        public void setPhone(long phone) {
-            this.phone = phone;
-        }
-
+    public void setCelPhone(long celPhone) {
+        this.celPhone = celPhone;
+    }
 }
